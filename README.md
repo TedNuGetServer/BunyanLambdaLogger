@@ -1,0 +1,2 @@
+# Bunyan.Lambda.Logging.AspNetCore
+This project borrows heavily from the work done by the AWS team and their [Amazon.Lambda.Logging.AspNetCore](https://github.com/aws/aws-lambda-dotnet/tree/master/Libraries/src/Amazon.Lambda.Logging.AspNetCore) project. This particular implementation of the ASP.NET Core ILogger class will uses a structured log format derived from the [node-bunyan](https://github.com/trentm/node-bunyan) Node.js logger inorder to write CloudWatch Log events.
