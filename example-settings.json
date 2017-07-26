@@ -1,0 +1,9 @@
+{
+  "Lambda.Logging": {
+    "LogLevel": {
+      "Default": "Trace",
+      "Microsoft": "Trace"
+    }
+  }
+}
+
