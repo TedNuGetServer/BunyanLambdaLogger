@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging.Internal;
 using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Extensions.Logging
@@ -93,7 +94,8 @@ namespace Microsoft.Extensions.Logging
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Information, eventId: 0, state: dataSet, exception: null, formatter: _messageFormatter);
+      logger.Log(logLevel: LogLevel.Information, eventId: 0, state: dataSet, exception: null,
+        formatter: _messageFormatter);
     }
 
     /// <summary>Formats and writes an informational log message.</summary>
@@ -102,13 +104,15 @@ namespace Microsoft.Extensions.Logging
     /// <param name="exception">The exception to log.</param>
     /// <param name="data">An object to attach to the log output</param>
     /// <param name="args">param arguments</param>
-    public static void LogInformation(this ILogger logger, string message, object data, Exception exception, params object[] args)
+    public static void LogInformation(this ILogger logger, string message, object data, Exception exception,
+      params object[] args)
     {
       if (logger == null) throw new ArgumentNullException(nameof(logger));
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Information, eventId: 0, state: dataSet, exception: exception, formatter: _messageFormatter);
+      logger.Log(logLevel: LogLevel.Information, eventId: 0, state: dataSet, exception: exception,
+        formatter: _messageFormatter);
     }
 
     #endregion
@@ -135,13 +139,15 @@ namespace Microsoft.Extensions.Logging
     /// <param name="exception">The exception to log.</param>
     /// <param name="data">An object to attach to the log output</param>
     /// <param name="args">param arguments</param>
-    public static void LogDebug(this ILogger logger, string message, object data, Exception exception, params object[] args)
+    public static void LogDebug(this ILogger logger, string message, object data, Exception exception,
+      params object[] args)
     {
       if (logger == null) throw new ArgumentNullException(nameof(logger));
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Debug, eventId: 0, state: dataSet, exception: exception, formatter: _messageFormatter);
+      logger.Log(logLevel: LogLevel.Debug, eventId: 0, state: dataSet, exception: exception,
+        formatter: _messageFormatter);
     }
 
     #endregion
@@ -168,13 +174,15 @@ namespace Microsoft.Extensions.Logging
     /// <param name="exception">The exception to log.</param>
     /// <param name="data">An object to attach to the log output</param>
     /// <param name="args">param arguments</param>
-    public static void LogTrace(this ILogger logger, string message, object data, Exception exception, params object[] args)
+    public static void LogTrace(this ILogger logger, string message, object data, Exception exception,
+      params object[] args)
     {
       if (logger == null) throw new ArgumentNullException(nameof(logger));
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Trace, eventId: 0, state: dataSet, exception: exception, formatter: _messageFormatter);
+      logger.Log(logLevel: LogLevel.Trace, eventId: 0, state: dataSet, exception: exception,
+        formatter: _messageFormatter);
     }
 
     #endregion
@@ -192,7 +200,8 @@ namespace Microsoft.Extensions.Logging
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Critical, eventId: 0, state: dataSet, exception: null, formatter: _messageFormatter);
+      logger.Log(logLevel: LogLevel.Critical, eventId: 0, state: dataSet, exception: null,
+        formatter: _messageFormatter);
     }
 
     /// <summary>Formats and writes an informational log message.</summary>
@@ -201,19 +210,28 @@ namespace Microsoft.Extensions.Logging
     /// <param name="exception">The exception to log.</param>
     /// <param name="data">An object to attach to the log output</param>
     /// <param name="args">param arguments</param>
-    public static void LogError(this ILogger logger, string message, object data, Exception exception, params object[] args)
+    public static void LogError(this ILogger logger, string message, object data, Exception exception,
+      params object[] args)
     {
       if (logger == null) throw new ArgumentNullException(nameof(logger));
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Critical, eventId: 0, state: dataSet, exception: exception, formatter: _messageFormatter);
+      logger.Log(logLevel: LogLevel.Critical, eventId: 0, state: dataSet, exception: exception,
+        formatter: _messageFormatter);
     }
 
     #endregion
 
     private static JObject CreateDataSet(string message, object data, object[] args)
     {
+      if (data != null && data.GetType().Name.ToLower() == "string")
+      {
+        args = args ?? new object[] { };
+        args = new[] {data}.Concat(args).ToArray();
+        data = null;
+      }
+
       var dataSet = JObject.FromObject(data ?? new { });
       dataSet.Add("msg", new FormattedLogValues(message, args).ToString());
       return dataSet;

@@ -72,6 +72,10 @@ namespace Microsoft.Extensions.Logging
           }
         }
       }
+      else
+      {
+        message.msg = formatter.Invoke(state, exception);
+      }
 
       if (options.IncludeNewline)
       {

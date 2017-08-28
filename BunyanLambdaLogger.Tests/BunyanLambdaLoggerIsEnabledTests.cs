@@ -186,6 +186,13 @@ namespace BunyanLambdaLogger.Tests
       logger.LogInformation("Should log information");
       logger.LogDebug("Should log debug");
       logger.LogTrace("Should log trace");
+
+      logger.LogCritical("Should log critical with {0}", "argument");
+      logger.LogError("Should log error with {0}", "argument");
+      logger.LogWarning("Should log warning with {0}", "argument");
+      logger.LogInformation("Should log information with {0}", "argument");
+      logger.LogDebug("Should log debug with {0}", "argument");
+      logger.LogTrace("Should log trace with {0}", "argument");
     }
   }
 }
