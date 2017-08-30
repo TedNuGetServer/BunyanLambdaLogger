@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Authors>TedNeGetServer</Authors>
     <TargetFramework>netstandard1.3</TargetFramework>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <OutputType>Library</OutputType>
     <Description>A bunyan structured format logger for AWS Lambda.</Description>
     <PackageTags>AWS;Amazon;Lambda;Bunyan;Logging</PackageTags>
