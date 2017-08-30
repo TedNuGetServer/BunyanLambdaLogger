@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Text;
 using Newtonsoft.Json.Linq;
 
@@ -12,6 +13,8 @@ namespace Microsoft.Extensions.Logging
     private readonly LambdaLoggerOptions options;
 
     internal readonly string applicationName;
+
+    internal readonly string hostname;
 
     private const string DEFAULT_CATEGORY_NAME = "Default";
 
@@ -25,6 +28,7 @@ namespace Microsoft.Extensions.Logging
       : this(categoryName, options)
     {
       this.applicationName = applicationName;
+      hostname = hostname = Dns.GetHostName();
     }
 
     public IDisposable BeginScope<TState>(TState state)
@@ -56,9 +60,7 @@ namespace Microsoft.Extensions.Logging
 
       message.pid = Process.GetCurrentProcess().Id;
 
-      message.hostname = Environment.GetEnvironmentVariable("COMPUTERNAME") ??
-                         Environment.GetEnvironmentVariable("HOSTNAME") ??
-                         Process.GetCurrentProcess().MachineName;
+      message.hostname = hostname;
 
       if (state.GetType().Name.ToLower() == "jobject")
       {
