@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 
-// https://raw.githubusercontent.com/aws/aws-lambda-dotnet/144df7cb7988ae8fb007d5ea7e172d23faff0d5b/Libraries/src/Amazon.Lambda.Logging.AspNetCore/ILoggerFactoryExtensions.cs
 // Same namespace as ILoggerFactory, to make these extensions appear
 // without the user needing to including our namespace first.
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Logging
 {
   /// <summary>

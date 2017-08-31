@@ -1,7 +1,16 @@
-﻿namespace Microsoft.Extensions.Logging
+﻿// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.Logging
 {
+  /// <summary>
+  ///
+  /// </summary>
   public static class LogLevelExtensions
   {
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static BunyanLambdaILogger.BunyanLogLevel ToBunyanLogLevel(this LogLevel value)
     {
       switch (value)
@@ -24,9 +33,6 @@
         case LogLevel.Warning:
           return BunyanLambdaILogger.BunyanLogLevel.WARN;
 
-        // bunyan doesn't have a concept of "none" so we're just falling through
-        // to the default... Blarg! Ho!
-        case LogLevel.None:
         default:
           // defaulting to Info based on Bunyan's default behaviour
           // "By default, log output is to stdout and at the 'info' level"

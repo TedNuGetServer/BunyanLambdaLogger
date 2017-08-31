@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Logging
 {
   /// <summary>
@@ -201,7 +202,7 @@ namespace Microsoft.Extensions.Logging
       var wildcardCategories = wildcardLogLevelsMapping.Keys.OrderByDescending(x => x).ToList();
 
       // Filter lambda that examines mapping
-      return (string category, LogLevel logLevel) =>
+      return (category, logLevel) =>
       {
         LogLevel minLevel;
 
@@ -212,7 +213,7 @@ namespace Microsoft.Extensions.Logging
         }
 
         // Find the most specific wildcard category that matches the logger category
-        var matchedCategory = wildcardCategories.FirstOrDefault(filterCategory => category.StartsWith(filterCategory));
+        var matchedCategory = wildcardCategories.FirstOrDefault(category.StartsWith);
         if (matchedCategory != null)
         {
           minLevel = wildcardLogLevelsMapping[matchedCategory];

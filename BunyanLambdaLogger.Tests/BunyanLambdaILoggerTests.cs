@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Xunit;
 
 namespace BunyanLambdaLogger.Tests
@@ -40,9 +37,7 @@ namespace BunyanLambdaLogger.Tests
     [Fact]
     public void BunyanLambdaILogger_IsEnabled_No_Default()
     {
-      var conf = new Dictionary<string, string>
-      {
-      };
+      var conf = new Dictionary<string, string>();
 
       // ReSharper disable once LocalVariableHidesMember
       var logger = Logger.Create(conf, nameof(BunyanLambdaILoggerTests), "unit-tests");

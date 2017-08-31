@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Logging
 {
   /// <summary>ILogger extension methods for common scenarios.</summary>

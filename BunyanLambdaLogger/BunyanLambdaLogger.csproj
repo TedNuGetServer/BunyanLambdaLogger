@@ -1,18 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Authors>TedNeGetServer</Authors>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <version>0.3.1</version>
+    <Authors>TedNuGetServer</Authors>
+
     <OutputType>Library</OutputType>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+
     <Description>A bunyan structured format logger for AWS Lambda.</Description>
+    <AssemblyTitle>TedNuGetServer.BunyanLambdaLogger</AssemblyTitle>
+    <AssemblyName>TedNuGetServer.BunyanLambdaLogger</AssemblyName>
+    <PackageId>TedNuGetServer.BunyanLambdaLogger</PackageId>
     <PackageTags>AWS;Amazon;Lambda;Bunyan;Logging</PackageTags>
-    <!--<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>-->
-    <!--<GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>-->
-    <!--<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>-->
-    <!--<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>-->
-    <!--<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>-->
-    <!--<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>-->
-    <!--<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>-->
+    <PackageProjectUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger/blob/master/LICENSE.TXT</PackageLicenseUrl>
+    <version>0.3.1</version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="../settings.json">
@@ -27,12 +37,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
     <PackageReference Include="System.Runtime" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Net.NameResolution, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\..\.nuget\packages\system.net.nameresolution\4.3.0\ref\netstandard1.3\System.Net.NameResolution.dll</HintPath>
-    </Reference>
+    <Content Include="..\example-settings.json" />
+    <Content Include="..\LICENSE.TXT" />
+    <Content Include="..\README.md" />
   </ItemGroup>
 </Project>

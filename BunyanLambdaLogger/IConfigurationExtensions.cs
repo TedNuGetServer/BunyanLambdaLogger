@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Configuration
 {
   /// <summary>IConfiguration extensions</summary>

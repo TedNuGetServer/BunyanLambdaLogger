@@ -2,12 +2,15 @@
 using System;
 using System.Diagnostics;
 using System.Net;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Logging
 {
-  public partial class BunyanLambdaILogger : ILogger, ILogger<object>
+  /// <summary>
+  ///
+  /// </summary>
+  public partial class BunyanLambdaILogger : ILogger
   {
     private readonly string categoryName;
     private readonly LambdaLoggerOptions options;
@@ -18,12 +21,23 @@ namespace Microsoft.Extensions.Logging
 
     private const string DEFAULT_CATEGORY_NAME = "Default";
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="categoryName"></param>
+    /// <param name="options"></param>
     public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options)
     {
       this.categoryName = string.IsNullOrEmpty(categoryName) ? DEFAULT_CATEGORY_NAME : categoryName;
       this.options = options;
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="categoryName"></param>
+    /// <param name="options"></param>
+    /// <param name="applicationName"></param>
     public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options, string applicationName)
       : this(categoryName, options)
     {
@@ -31,6 +45,12 @@ namespace Microsoft.Extensions.Logging
       hostname = hostname = Dns.GetHostName();
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="state"></param>
+    /// <typeparam name="TState"></typeparam>
+    /// <returns></returns>
     public IDisposable BeginScope<TState>(TState state)
     {
       // No support for scopes at this point
@@ -38,11 +58,23 @@ namespace Microsoft.Extensions.Logging
       return new NoOpDisposable();
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="logLevel"></param>
+    /// <returns></returns>
     public bool IsEnabled(LogLevel logLevel)
     {
       return (options.Filter == null || options.Filter(categoryName, logLevel));
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="logLevel"></param>
+    /// <param name="eventId"></param>
+    /// <param name="state"></param>
+    /// <param name="exception"></param>
+    /// <param name="formatter"></param>
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
       Func<TState, Exception, string> formatter)
     {
@@ -89,6 +121,8 @@ namespace Microsoft.Extensions.Logging
 
       if (eventId.Id != 0) message.event_id = eventId;
 
+      message.v = 0;
+
       string finalText;
       try
       {
@@ -97,7 +131,9 @@ namespace Microsoft.Extensions.Logging
           NullValueHandling = NullValueHandling.Ignore,
         });
       }
+#pragma warning disable 168
       catch (Exception e)
+#pragma warning restore 168
       {
         return; // suppressing error here is intentional
       }
