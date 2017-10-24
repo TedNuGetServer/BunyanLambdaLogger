@@ -25,12 +25,6 @@
     <version>0.3.2</version>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="../settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
@@ -40,10 +34,5 @@
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
     <PackageReference Include="System.Runtime" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\example-settings.json" />
-    <Content Include="..\LICENSE.TXT" />
-    <Content Include="..\README.md" />
   </ItemGroup>
 </Project>
