@@ -15,9 +15,11 @@ namespace Microsoft.Extensions.Logging
     private readonly string categoryName;
     private readonly LambdaLoggerOptions options;
 
-    internal readonly string applicationName;
+    private readonly string applicationName;
 
-    internal readonly string hostname;
+    private readonly string hostname;
+
+    private readonly string environment;
 
     private const string DEFAULT_CATEGORY_NAME = "Default";
 
@@ -33,15 +35,16 @@ namespace Microsoft.Extensions.Logging
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="categoryName"></param>
     /// <param name="options"></param>
     /// <param name="applicationName"></param>
-    public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options, string applicationName)
+    /// <param name="environment"></param>
+    public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options, string applicationName, string environment = null)
       : this(categoryName, options)
     {
       this.applicationName = applicationName;
+      this.environment = environment;
       hostname = hostname = Dns.GetHostName();
     }
 
@@ -58,11 +61,10 @@ namespace Microsoft.Extensions.Logging
       return new NoOpDisposable();
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="logLevel"></param>
-    /// <returns></returns>
+    ///  <summary>
+    ///  </summary>
+    ///  <param name="logLevel"></param>
+    ///  <returns></returns>
     public bool IsEnabled(LogLevel logLevel)
     {
       return (options.Filter == null || options.Filter(categoryName, logLevel));
@@ -85,6 +87,8 @@ namespace Microsoft.Extensions.Logging
       dynamic message = new JObject();
 
       if (applicationName != null) message.name = applicationName;
+
+      if (environment != null) message.env = environment;
 
       if (options.IncludeLogLevel) message.level = logLevel.ToBunyanLogLevel();
 

@@ -10,6 +10,8 @@ namespace Microsoft.Extensions.Logging
 
     private readonly string applicationName;
 
+    private readonly string environment;
+
     // Constructor
     public BunyanLambdaILoggerProvider(LambdaLoggerOptions options)
     {
@@ -17,16 +19,17 @@ namespace Microsoft.Extensions.Logging
     }
 
     // Constructor
-    public BunyanLambdaILoggerProvider(LambdaLoggerOptions options, string applicationName)
+    public BunyanLambdaILoggerProvider(LambdaLoggerOptions options, string applicationName, string environment = null)
     {
       this.options = options ?? throw new ArgumentNullException(nameof(options));
       this.applicationName = applicationName;
+      this.environment = environment;
     }
 
     // Interface methods
     public ILogger CreateLogger(string categoryName)
     {
-      return new BunyanLambdaILogger(categoryName, options, applicationName);
+      return new BunyanLambdaILogger(categoryName, options, applicationName, environment);
     }
 
     public void Dispose()

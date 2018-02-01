@@ -22,13 +22,13 @@
     <PackageTags>AWS;Amazon;Lambda;Bunyan;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger/blob/master/LICENSE.TXT</PackageLicenseUrl>
-    <version>0.3.3</version>
+    <version>0.4.0</version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.IO" Version="4.3.0" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />

@@ -29,10 +29,11 @@ namespace Microsoft.Extensions.Logging
     /// <param name="factory">ILoggerFactory to add Lambda logger to.</param>
     /// <param name="options">Lambda logging options.</param>
     /// <param name="applicationName">The name of the application being logged.</param>
+    /// <param name="environment"></param>
     /// <returns>Updated ILoggerFactory.</returns>
     [CLSCompliant(false)] // https://github.com/aspnet/Logging/issues/500
     public static ILoggerFactory AddBunyanLambdaLogger(this ILoggerFactory factory, LambdaLoggerOptions options,
-      string applicationName)
+      string applicationName, string environment = null)
     {
       if (factory == null)
       {
@@ -43,7 +44,7 @@ namespace Microsoft.Extensions.Logging
         throw new ArgumentNullException(nameof(options));
       }
 
-      var provider = new BunyanLambdaILoggerProvider(options, applicationName);
+      var provider = new BunyanLambdaILoggerProvider(options, applicationName, environment);
       factory.AddProvider(provider);
       return factory;
     }
