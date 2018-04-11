@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Xunit;
+using static BunyanLambdaLogger.Tests.BunyanLambdaLoggerExtensions;
 
 namespace BunyanLambdaLogger.Tests
 {
@@ -97,5 +98,44 @@ namespace BunyanLambdaLogger.Tests
       var logger = Logger.Create(conf, nameof(BunyanLambdaILoggerTests), "unit-tests");
       logger.LogCritical("Message with {0} {1}", new {property1 = "value 1"}, new Exception("Exception!"), "argument", "argument2");
     }
+
+    [Fact]
+    public void BunyanLambdaILogger_With_EventId()
+    {
+      var conf = new Dictionary<string, string>
+      {
+        {"Lambda.Logging:LogLevel:Default", "Information"}
+      };
+
+      var eventId = new EventId(1, "NewEvent");
+
+      // ReSharper disable once LocalVariableHidesMember
+      var logger = Logger.Create(conf, nameof(BunyanLambdaILoggerTests), "unit-tests");
+
+      var dataSet = TestCreateDataSet("unit-tests", "EF Core event", null);
+
+      logger.Log(logLevel: LogLevel.Information, eventId: eventId, state: dataSet, exception: null,
+        formatter: TestMessageFormatter);
+    }
+
+    [Fact]
+    public void BunyanLambdaILogger_Without_EventId()
+    {
+      var conf = new Dictionary<string, string>
+      {
+        {"Lambda.Logging:LogLevel:Default", "Information"}
+      };
+
+      var eventId = new EventId();
+
+      // ReSharper disable once LocalVariableHidesMember
+      var logger = Logger.Create(conf, nameof(BunyanLambdaILoggerTests), "unit-tests");
+
+      var dataSet = TestCreateDataSet("unit-tests", "EF Core event", null);
+
+      logger.Log(logLevel: LogLevel.Information, eventId: eventId, state: dataSet, exception: null,
+        formatter: TestMessageFormatter);
+    }
+
   }
 }

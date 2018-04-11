@@ -123,7 +123,11 @@ namespace Microsoft.Extensions.Logging
 
       if (exception != null) message.err = JObject.FromObject(exception);
 
-      if (eventId.Id != 0) message.event_id = eventId;
+      if (eventId.Id != 0)
+      {
+        message.event_id = eventId.Id;
+        message.event_name = eventId.Name;
+      }
 
       message.v = 0;
 
