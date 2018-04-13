@@ -3,22 +3,32 @@
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.Logging
 {
-  internal class BunyanLambdaILoggerProvider : ILoggerProvider
+  /// <summary>
+  ///
+  /// </summary>
+  public class BunyanLambdaILoggerProvider : ILoggerProvider
   {
-    // Private fields
     private readonly LambdaLoggerOptions options;
 
     private readonly string applicationName;
 
     private readonly string environment;
 
-    // Constructor
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="options"></param>
     public BunyanLambdaILoggerProvider(LambdaLoggerOptions options)
     {
       this.options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
-    // Constructor
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="options"></param>
+    /// <param name="applicationName"></param>
+    /// <param name="environment"></param>
     public BunyanLambdaILoggerProvider(LambdaLoggerOptions options, string applicationName, string environment = null)
     {
       this.options = options ?? throw new ArgumentNullException(nameof(options));
@@ -26,12 +36,19 @@ namespace Microsoft.Extensions.Logging
       this.environment = environment;
     }
 
-    // Interface methods
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="categoryName"></param>
+    /// <returns></returns>
     public ILogger CreateLogger(string categoryName)
     {
       return new BunyanLambdaILogger(categoryName, options, applicationName, environment);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
     public void Dispose()
     {
     }
