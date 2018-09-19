@@ -121,7 +121,7 @@ namespace Microsoft.Extensions.Logging
 
       message.time = DateTime.UtcNow;
 
-      if (exception != null) message.err = JObject.FromObject(exception);
+      if (exception != null) message.err = exception.ToString();
 
       if (eventId.Id != 0)
       {
