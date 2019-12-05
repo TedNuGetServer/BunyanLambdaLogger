@@ -185,7 +185,7 @@ namespace Microsoft.Extensions.Logging
           if (wildcardLocation != category.Length - 1)
           {
             throw new ArgumentException(
-              $"Category '{category}' is invalid - wilcards are only supported at the end of a category.");
+              $"Category '{category}' is invalid - wildcards are only supported at the end of a category.");
           }
 
           var trimmedCategory = category.TrimEnd('*');
