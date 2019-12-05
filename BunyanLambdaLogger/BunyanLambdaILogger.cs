@@ -84,52 +84,47 @@ namespace Microsoft.Extensions.Logging
 
       if (formatter == null) throw new ArgumentNullException(nameof(formatter));
 
-      dynamic message = new JObject();
+      var message = new JObject();
 
-      if (applicationName != null) message.name = applicationName;
+      if (applicationName != null) message["name"] = applicationName;
 
-      if (environment != null) message.env = environment;
+      if (environment != null) message["env"] = environment;
 
-      if (options.IncludeLogLevel) message.level = logLevel.ToBunyanLogLevel();
+      if (options.IncludeLogLevel) message["level"] = (int)logLevel.ToBunyanLogLevel();
 
-      if (options.IncludeCategory) message.category_name = categoryName;
+      if (options.IncludeCategory) message["category_name"] = categoryName;
 
-      message.pid = Process.GetCurrentProcess().Id;
+      message["pid"] = Process.GetCurrentProcess().Id;
 
-      message.hostname = hostname;
+      message["hostname"] = hostname;
 
-      if (state.GetType().Name.ToLower() == "jobject")
+      if (state is JObject obj)
       {
-        using (var enumerator = (state as JObject)?.GetEnumerator())
+        foreach (var kvp in obj)
         {
-          if (enumerator == null) return;
-          while (enumerator.MoveNext())
-          {
-            var current = enumerator.Current;
-            message[current.Key.ToLower()] = current.Value;
-          }
+          message[kvp.Key.ToLower()] = kvp.Value;
         }
       }
       else
       {
-        message.msg = formatter.Invoke(state, exception);
+        message["msg"] = formatter.Invoke(state, exception);
       }
 
       if (options.IncludeNewline)
       {
       }
 
-      message.time = DateTime.UtcNow;
+      message["time"] = DateTime.UtcNow;
 
-      if (exception != null) message.err = exception.ToString();
+      if (exception != null) message["err"] = exception.ToString();
 
       if (eventId.Id != 0)
       {
-        message.event_id = eventId.Id;
-        message.event_name = eventId.Name;
+        message["event_id"] = eventId.Id;
+        message["event_name"] = eventId.Name;
       }
 
-      message.v = 0;
+      message["v"] = 0;
 
       string finalText;
       try

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Extensions.Logging.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace BunyanLambdaLogger.Tests
@@ -9,7 +8,7 @@ namespace BunyanLambdaLogger.Tests
   {
     internal static JObject TestCreateDataSet(string message, object data, object[] args)
     {
-      if (data != null && data.GetType().Name.ToLower() == "string")
+      if (data != null && data is string)
       {
         args = args ?? new object[] { };
         args = new[] {data}.Concat(args).ToArray();
@@ -17,7 +16,7 @@ namespace BunyanLambdaLogger.Tests
       }
 
       var dataSet = JObject.FromObject(data ?? new { });
-      dataSet.Add("msg", new FormattedLogValues(message, args).ToString());
+      dataSet.Add("msg", string.Format(message, args));
       return dataSet;
     }
 

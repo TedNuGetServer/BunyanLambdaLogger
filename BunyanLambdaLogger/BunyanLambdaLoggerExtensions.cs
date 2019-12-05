@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging.Internal;
-using System;
+﻿using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -201,7 +200,7 @@ namespace Microsoft.Extensions.Logging
 
       var dataSet = CreateDataSet(message, data, args);
 
-      logger.Log(logLevel: LogLevel.Critical, eventId: 0, state: dataSet, exception: null,
+      logger.Log(logLevel: LogLevel.Error, eventId: 0, state: dataSet, exception: null,
         formatter: _messageFormatter);
     }
 
@@ -226,7 +225,7 @@ namespace Microsoft.Extensions.Logging
 
     private static JObject CreateDataSet(string message, object data, object[] args)
     {
-      if (data != null && data.GetType().Name.ToLower() == "string")
+      if (data != null && data is string)
       {
         args = args ?? new object[] { };
         args = new[] {data}.Concat(args).ToArray();
@@ -234,7 +233,7 @@ namespace Microsoft.Extensions.Logging
       }
 
       var dataSet = JObject.FromObject(data ?? new { });
-      dataSet.Add("msg", new FormattedLogValues(message, args).ToString());
+      dataSet.Add("msg", string.Format(message, args));
       return dataSet;
     }
 
