@@ -21,7 +21,7 @@
     <PackageTags>AWS;Amazon;Lambda;Bunyan;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger/blob/master/LICENSE.TXT</PackageLicenseUrl>
-    <version>0.5.0</version>
+    <version>2.0.0</version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
