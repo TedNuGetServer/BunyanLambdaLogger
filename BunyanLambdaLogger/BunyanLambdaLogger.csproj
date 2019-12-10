@@ -20,7 +20,7 @@
     <PackageId>TedNuGetServer.BunyanLambdaLogger</PackageId>
     <PackageTags>AWS;Amazon;Lambda;Bunyan;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger/blob/master/LICENSE.TXT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <version>2.0.0</version>
   </PropertyGroup>
   <ItemGroup>
