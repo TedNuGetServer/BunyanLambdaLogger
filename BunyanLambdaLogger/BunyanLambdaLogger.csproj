@@ -26,7 +26,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>Bunyan Lambda Logger</Title>
     <Copyright>2022</Copyright>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/TedNuGetServer/BunyanLambdaLogger/master/LICENSE.TXT</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
