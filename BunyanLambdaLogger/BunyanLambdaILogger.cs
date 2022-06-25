@@ -1,154 +1,152 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.Net;
 using Newtonsoft.Json.Linq;
 
 // ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.Logging
+namespace Microsoft.Extensions.Logging;
+
+/// <summary>
+///
+/// </summary>
+public partial class BunyanLambdaILogger : ILogger
 {
+  private readonly string categoryName;
+  private readonly LambdaLoggerOptions options;
+
+  private readonly string applicationName;
+
+  private readonly string hostname;
+
+  private readonly string environment;
+
+  private const string DEFAULT_CATEGORY_NAME = "Default";
+
   /// <summary>
   ///
   /// </summary>
-  public partial class BunyanLambdaILogger : ILogger
+  /// <param name="categoryName"></param>
+  /// <param name="options"></param>
+  public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options)
   {
-    private readonly string categoryName;
-    private readonly LambdaLoggerOptions options;
+    this.categoryName = string.IsNullOrEmpty(categoryName) ? DEFAULT_CATEGORY_NAME : categoryName;
+    this.options = options;
+  }
 
-    private readonly string applicationName;
+  /// <summary>
+  /// </summary>
+  /// <param name="categoryName"></param>
+  /// <param name="options"></param>
+  /// <param name="applicationName"></param>
+  /// <param name="environment"></param>
+  public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options, string applicationName, string environment = null)
+    : this(categoryName, options)
+  {
+    this.applicationName = applicationName;
+    this.environment = environment;
+    hostname = hostname = Dns.GetHostName();
+  }
 
-    private readonly string hostname;
+  /// <summary>
+  ///
+  /// </summary>
+  /// <param name="state"></param>
+  /// <typeparam name="TState"></typeparam>
+  /// <returns></returns>
+  public IDisposable BeginScope<TState>(TState state)
+  {
+    // No support for scopes at this point
+    // https://docs.asp.net/en/latest/fundamentals/logging.html#log-scopes
+    return new NoOpDisposable();
+  }
 
-    private readonly string environment;
+  ///  <summary>
+  ///  </summary>
+  ///  <param name="logLevel"></param>
+  ///  <returns></returns>
+  public bool IsEnabled(LogLevel logLevel)
+  {
+    return (options.Filter == null || options.Filter(categoryName, logLevel));
+  }
 
-    private const string DEFAULT_CATEGORY_NAME = "Default";
+  /// <summary>
+  /// </summary>
+  /// <param name="logLevel"></param>
+  /// <param name="eventId"></param>
+  /// <param name="state"></param>
+  /// <param name="exception"></param>
+  /// <param name="formatter"></param>
+  public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+    Func<TState, Exception, string> formatter)
+  {
+    if (!IsEnabled(logLevel)) return;
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="categoryName"></param>
-    /// <param name="options"></param>
-    public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options)
+    if (formatter == null) throw new ArgumentNullException(nameof(formatter));
+
+    var message = new JObject();
+
+    if (applicationName != null) message["name"] = applicationName;
+
+    if (environment != null) message["env"] = environment;
+
+    if (options.IncludeLogLevel) message["level"] = (int)logLevel.ToBunyanLogLevel();
+
+    if (options.IncludeCategory) message["category_name"] = categoryName;
+
+    message["pid"] = Environment.ProcessId;
+
+    message["hostname"] = hostname;
+
+    if (state is JObject obj)
     {
-      this.categoryName = string.IsNullOrEmpty(categoryName) ? DEFAULT_CATEGORY_NAME : categoryName;
-      this.options = options;
+      foreach (var kvp in obj)
+      {
+        message[kvp.Key.ToLower()] = kvp.Value;
+      }
+    }
+    else
+    {
+      message["msg"] = formatter.Invoke(state, exception);
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="categoryName"></param>
-    /// <param name="options"></param>
-    /// <param name="applicationName"></param>
-    /// <param name="environment"></param>
-    public BunyanLambdaILogger(string categoryName, LambdaLoggerOptions options, string applicationName, string environment = null)
-      : this(categoryName, options)
+    if (options.IncludeNewline)
     {
-      this.applicationName = applicationName;
-      this.environment = environment;
-      hostname = hostname = Dns.GetHostName();
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="state"></param>
-    /// <typeparam name="TState"></typeparam>
-    /// <returns></returns>
-    public IDisposable BeginScope<TState>(TState state)
+    message["time"] = DateTime.UtcNow;
+
+    if (exception != null) message["err"] = exception.ToString();
+
+    if (eventId.Id != 0)
     {
-      // No support for scopes at this point
-      // https://docs.asp.net/en/latest/fundamentals/logging.html#log-scopes
-      return new NoOpDisposable();
+      message["event_id"] = eventId.Id;
+      message["event_name"] = eventId.Name;
     }
 
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="logLevel"></param>
-    ///  <returns></returns>
-    public bool IsEnabled(LogLevel logLevel)
+    message["v"] = 0;
+
+    string finalText;
+    try
     {
-      return (options.Filter == null || options.Filter(categoryName, logLevel));
+      finalText = JsonConvert.SerializeObject(message, Formatting.None, new JsonSerializerSettings
+      {
+        NullValueHandling = NullValueHandling.Ignore,
+      });
     }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="logLevel"></param>
-    /// <param name="eventId"></param>
-    /// <param name="state"></param>
-    /// <param name="exception"></param>
-    /// <param name="formatter"></param>
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
-      Func<TState, Exception, string> formatter)
-    {
-      if (!IsEnabled(logLevel)) return;
-
-      if (formatter == null) throw new ArgumentNullException(nameof(formatter));
-
-      var message = new JObject();
-
-      if (applicationName != null) message["name"] = applicationName;
-
-      if (environment != null) message["env"] = environment;
-
-      if (options.IncludeLogLevel) message["level"] = (int)logLevel.ToBunyanLogLevel();
-
-      if (options.IncludeCategory) message["category_name"] = categoryName;
-
-      message["pid"] = Process.GetCurrentProcess().Id;
-
-      message["hostname"] = hostname;
-
-      if (state is JObject obj)
-      {
-        foreach (var kvp in obj)
-        {
-          message[kvp.Key.ToLower()] = kvp.Value;
-        }
-      }
-      else
-      {
-        message["msg"] = formatter.Invoke(state, exception);
-      }
-
-      if (options.IncludeNewline)
-      {
-      }
-
-      message["time"] = DateTime.UtcNow;
-
-      if (exception != null) message["err"] = exception.ToString();
-
-      if (eventId.Id != 0)
-      {
-        message["event_id"] = eventId.Id;
-        message["event_name"] = eventId.Name;
-      }
-
-      message["v"] = 0;
-
-      string finalText;
-      try
-      {
-        finalText = JsonConvert.SerializeObject(message, Formatting.None, new JsonSerializerSettings
-        {
-          NullValueHandling = NullValueHandling.Ignore,
-        });
-      }
 #pragma warning disable 168
-      catch (Exception e)
+    catch (Exception e)
 #pragma warning restore 168
-      {
-        return; // suppressing error here is intentional
-      }
-
-      Amazon.Lambda.Core.LambdaLogger.Log(finalText);
+    {
+      return; // suppressing error here is intentional
     }
 
-    private class NoOpDisposable : IDisposable
+    Amazon.Lambda.Core.LambdaLogger.Log(finalText);
+  }
+
+  private class NoOpDisposable : IDisposable
+  {
+    public void Dispose()
     {
-      public void Dispose()
-      {
-      }
     }
   }
 }

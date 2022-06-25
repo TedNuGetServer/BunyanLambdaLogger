@@ -3,7 +3,6 @@
     <Authors>TedNuGetServer</Authors>
 
     <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -21,12 +20,19 @@
     <PackageTags>AWS;Amazon;Lambda;Bunyan;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
+    <LangVersion>default</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Bunyan Lambda Logger</Title>
+    <Copyright>2022</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/TedNuGetServer/BunyanLambdaLogger/master/LICENSE.TXT</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/TedNuGetServer/BunyanLambdaLogger</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>
